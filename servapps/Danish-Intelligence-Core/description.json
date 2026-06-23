@@ -1,0 +1,9 @@
+{
+  "name": "Danish Intelligence Core",
+  "longDescription": "<p>Danish Intelligence Core is a unified service that handles everything Danish for your media stack in one place. It replaces three separate containers (dksubs-proxy, ob-proxy, and danskarr) with a single, high-performance engine</p>",
+  "description": "One-click setup: The service can auto-discover Prowlarr, Radarr, and Sonarr API keys from mounted Cosmos config folders, rewires legacy dksubs-proxy URLs, paints Custom Formats and Quality Profiles, and exposes /status for post-install checks. OldBoys credentials are optional.",
+  "tags": ["Danish Intelligence", "core", "For arr apps"],
+  "repository": "https://github.com/unknown0152/danish-intelligence",
+  "image": "ghcr.io/unknown0152/danish-intelligence",
+  "supported_architectures": ["amd64"]
+}

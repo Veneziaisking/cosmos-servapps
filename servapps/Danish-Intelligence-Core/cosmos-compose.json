@@ -1,0 +1,204 @@
+{
+    "minVersion": "0.9.0",
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "ProwlarrKey",
+                "label": "Prowlarr API Key (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "OldBoysToken",
+                "label": "OldBoys API Token (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "OldBoysRSS",
+                "label": "OldBoys RSS Key / RID (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "MediaRoot",
+                "label": "Host Media Root Path",
+                "initialValue": "/srv/media",
+                "type": "text",
+                "required": true
+            },
+            {
+                "name": "ConfigRoot",
+                "label": "Host Config Root Path",
+                "initialValue": "/srv/config",
+                "type": "text",
+                "required": true
+            },
+            {
+                "name": "PUID",
+                "label": "Container User ID (PUID)",
+                "initialValue": "1001",
+                "type": "text",
+                "required": true
+            },
+            {
+                "name": "PGID",
+                "label": "Container Group ID (PGID)",
+                "initialValue": "1001",
+                "type": "text",
+                "required": true
+            },
+            {
+                "name": "MediaServerExternalUrl",
+                "label": "Media Server External URL (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "SeerrAdminEmail",
+                "label": "Seerr Admin Email",
+                "initialValue": "admin@danish.requests",
+                "type": "text",
+                "required": true
+            },
+            {
+                "name": "SeerrAdminPassword",
+                "label": "Seerr Admin Password (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "PlexServerName",
+                "label": "Plex Server Name (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "PlexMachineId",
+                "label": "Plex Machine ID (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "PlexClaim",
+                "label": "Plex Claim Token (optional)",
+                "type": "text",
+                "required": false
+            },
+            {
+                "name": "PlexToken",
+                "label": "Plex Access Token (optional)",
+                "type": "text",
+                "required": false
+            }
+        ]
+    },
+    "services": {
+        "danish-intelligence": {
+            "image": "ghcr.io/unknown0152/danish-intelligence:v1.0.24",
+            "container_name": "danish-intelligence",
+            "restart": "unless-stopped",
+            "environment": [
+                "PROWLARR_URL=http://prowlarr:9696",
+                "PROWLARR_API_KEY={Context.ProwlarrKey}",
+                "OB_API_TOKEN={Context.OldBoysToken}",
+                "OB_RID={Context.OldBoysRSS}",
+                "PROXY_API_KEY={Passwords.32}",
+                "ALTMOUNT_API_KEY={Passwords.32}",
+                "PROXY_URL=http://danish-intelligence:9699",
+                "ALTMOUNT_URL=http://altmount:8080",
+                "DANISH_ARR_NO_INDEXERS=true",
+                "PUID={Context.PUID}",
+                "PGID={Context.PGID}",
+                "CACHE_DB=/config/proxy_cache.db",
+                "OB_PROXY_DB=/config/ob_meta.db",
+                "SEERR_URL=http://seerr:5055",
+                "MEDIA_SERVER_TYPE=plex",
+                "MEDIA_SERVER_URL=http://plex:32400",
+                "ENABLE_2160P_ARRS=auto",
+                "ARR_READY_TIMEOUT_SECONDS=240",
+                "ARR_READY_RETRY_SECONDS=10",
+                "INSTALL_DEBUG=1",
+                "INSTALL_DEBUG_FILE=/config/install-debug.jsonl",
+                "INSTALL_DEBUG_SNAPSHOT=/config/install-debug-latest.json",
+                "LISTEN_PORT=9699",
+                "LISTEN_HOST=0.0.0.0",
+                "MEDIA_SERVER_EXTERNAL_URL={Context.MediaServerExternalUrl}",
+                "SEERR_ADMIN_EMAIL={Context.SeerrAdminEmail}",
+                "SEERR_ADMIN_PASSWORD={Context.SeerrAdminPassword}",
+                "SEERR_ADMIN_PASSWORD_FILE=/config/seerr-admin-password.txt",
+                "PLEX_SERVER_NAME={Context.PlexServerName}",
+                "PLEX_MACHINE_ID={Context.PlexMachineId}",
+                "PLEX_TOKEN={Context.PlexToken}"
+            ],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-force-network-secured": "true",
+                "cosmos-icon": "https://raw.githubusercontent.com/unknown0152/danish-intelligence/master/icon.png"
+            },
+            "volumes": [
+                {
+                    "source": "{Context.ConfigRoot}/danish-intelligence",
+                    "target": "/config",
+                    "type": "bind"
+                },
+                {
+                    "source": "{Context.ConfigRoot}/prowlarr",
+                    "target": "/arr-config/prowlarr",
+                    "type": "bind",
+                    "read_only": true
+                },
+                {
+                    "source": "{Context.ConfigRoot}/radarr",
+                    "target": "/arr-config/radarr",
+                    "type": "bind",
+                    "read_only": true
+                },
+                {
+                    "source": "{Context.ConfigRoot}/radarr-2160p",
+                    "target": "/arr-config/radarr-2160p",
+                    "type": "bind",
+                    "read_only": true
+                },
+                {
+                    "source": "{Context.ConfigRoot}/sonarr",
+                    "target": "/arr-config/sonarr",
+                    "type": "bind",
+                    "read_only": true
+                },
+                {
+                    "source": "{Context.ConfigRoot}/sonarr-2160p",
+                    "target": "/arr-config/sonarr-2160p",
+                    "type": "bind",
+                    "read_only": true
+                },
+                {
+                    "source": "{Context.ConfigRoot}/seerr",
+                    "target": "/seerr-config",
+                    "type": "bind"
+                },
+                {
+                    "source": "{Context.ConfigRoot}/plex",
+                    "target": "/plex-config",
+                    "type": "bind"
+                },
+                {
+                    "source": "/mnt",
+                    "target": "/mnt",
+                    "type": "bind",
+                    "bind": {
+                        "propagation": "rshared"
+                    }
+                },
+                {
+                    "source": "{Context.MediaRoot}",
+                    "target": "/media",
+                    "type": "bind"
+                }
+            ],
+            "networks": {
+                "media-stack": {}
+            }
+        }
+    }
+}    

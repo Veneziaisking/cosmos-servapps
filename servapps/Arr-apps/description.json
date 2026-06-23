@@ -1,0 +1,16 @@
+{
+  "name": "ARR Media Stack",
+  "longDescription": "<p>ARR Media Stack deploys standard and 2160p instances of Radarr and Sonarr. Separate applications allow independent quality profiles, root folders, release profiles, and download management for HD and UHD media libraries.</p>",
+  "description": "Complete ARR stack with dedicated Radarr and Sonarr instances for both standard and 2160p libraries.",
+  "tags": [
+    "radarr",
+    "sonarr",
+    "media"
+  ],
+  "repository": "https://github.com/linuxserver",
+  "image": "lscr.io/linuxserver/radarr",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

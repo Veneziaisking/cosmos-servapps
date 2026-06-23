@@ -1,0 +1,308 @@
+{
+  "name": "Arr-apps",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "MediaRoot",
+        "label": "Host Media Root Path",
+        "initialValue": "{DefaultDataPath}/media",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PUID",
+        "label": "Container User ID (PUID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PGID",
+        "label": "Container Group ID (PGID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "adminOnly",
+        "label": "Do you want to make this service admin only?",
+        "initialValue": false,
+        "type": "checkbox"
+      },
+      {
+        "name": "Enable2160p",
+        "label": "Enable 2160p Radarr and Sonarr",
+        "initialValue": false,
+        "type": "checkbox"
+      }
+    ]
+  },
+  "minVersion": "0.9.0",
+  "services": {
+    "radarr": {
+      "image": "lscr.io/linuxserver/radarr:latest",
+      "container_name": "radarr",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "RADARR_SERVER_PORT=7878"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/radarr",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "Radarr",
+          "description": "Expose Radarr to the web",
+          "useHost": true,
+          "target": "http://radarr:7878",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos.stack": "radarr"
+      },
+      "networks": {
+        "media-stack": {}
+      },
+      "network_mode": "media-stack"
+    },
+    "sonarr": {
+      "image": "lscr.io/linuxserver/sonarr:latest",
+      "container_name": "sonarr",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "SONARR__SERVER__PORT=8989"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/sonarr",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "sonarr",
+          "description": "Expose sonarr to the web",
+          "useHost": true,
+          "target": "http://sonarr:8989",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos.stack": "sonarr"
+      },
+      "networks": {
+        "media-stack": {}
+      },
+      "network_mode": "media-stack"
+    }
+    {if Context.Enable2160p}
+    ,
+    "radarr-2160p": {
+      "image": "lscr.io/linuxserver/radarr:latest",
+      "container_name": "radarr-2160p",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "RADARR__SERVER__PORT=7879"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/radarr-2160p",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "Radarr 2160p",
+          "description": "Expose Radarr 2160p to the web",
+          "useHost": true,
+          "target": "http://radarr-2160p:7879",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos.stack": "radarr"
+      },
+      "networks": {
+        "media-stack": {}
+      },
+      "network_mode": "media-stack"
+    },
+    "sonarr-2160p": {
+      "image": "lscr.io/linuxserver/sonarr:latest",
+      "container_name": "sonarr-2160p",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "SONARR__SERVER__PORT=8990"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/sonarr-2160p",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "sonarr 2160p",
+          "description": "Expose sonarr 2160p to the web",
+          "useHost": true,
+          "target": "http://sonarr-2160p:8990",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos.stack": "sonarr"
+      },
+      "networks": {
+        "media-stack": {}
+      },
+      "network_mode": "media-stack"
+    }
+    {/if}
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "driver": "bridge",
+      "attachable": true
+    }
+  }
+}

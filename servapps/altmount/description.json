@@ -1,0 +1,18 @@
+{
+  "name": "Altmount",
+  "longDescription": "<p>Altmount is a high-performance Usenet import and media management service designed to work alongside ARR applications. It provides SABnzbd integration, FUSE mounting, metadata management, health checks, queue cleanup, and advanced import handling for Radarr and Sonarr environments. Altmount can automatically process downloads, manage media imports, and maintain libraries while integrating seamlessly with existing media stacks.</p><p>Learn more at https://altmount.kipsilabs.top/</p>",
+  "description": "Advanced media import, FUSE mounting, and ARR integration service for automated Usenet and media workflows.",
+  "tags": [
+    "altmount",
+    "media",
+    "arr",
+    "usenet",
+    "sabnzbd"
+  ],
+  "repository": "https://github.com/unknown0152/altmount",
+  "image": "ghcr.io/unknown0152/altmount-patched:latest",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

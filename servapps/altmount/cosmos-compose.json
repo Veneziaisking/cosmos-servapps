@@ -1,0 +1,194 @@
+{
+  "name": "Altmount",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "MediaRoot",
+        "label": "Host Media Root Path",
+        "initialValue": "{DefaultDataPath}/media",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PUID",
+        "label": "Container User ID (PUID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PGID",
+        "label": "Container Group ID (PGID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "adminOnly",
+        "label": "Do you want to make this service admin only?",
+        "initialValue": false,
+        "type": "checkbox"
+      }
+    ]
+  },
+  "minVersion": "0.9.0",
+  "services": {
+    "altmount": {
+      "image": "ghcr.io/unknown0152/altmount-patched:latest",
+      "container_name": "altmount",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "PORT=8080",
+        "LOG_LEVEL=warn",
+        "JWT_SECRET={Passwords.64}",
+        "ALTMOUNT_AUTH_LOGIN_REQUIRED=false",
+        "ALTMOUNT_API_KEY_OVERRIDE={Passwords.32}",
+        "ALTMOUNT_MOUNT_TYPE=fuse",
+        "ALTMOUNT_MOUNT_PATH=/mnt/altmount",
+        "ALTMOUNT_FUSE_ENABLED=true",
+        "ALTMOUNT_FUSE_MOUNT_PATH=/mnt/altmount",
+        "ALTMOUNT_SABNZBD_COMPLETE_DIR=/",
+        "ALTMOUNT_ENABLE_SABNZBD=true",
+        "ALTMOUNT_ENABLE_ARRS=true",
+        "ALTMOUNT_METADATA_ROOT_PATH=/metadata",
+        "ALTMOUNT_METADATA_DELETE_SOURCE_NZB_ON_REMOVAL=false",
+        "ALTMOUNT_METADATA_BACKUP_ENABLED=false",
+        "ALTMOUNT_METADATA_BACKUP_PATH=/config/backups",
+        "ALTMOUNT_METADATA_BACKUP_SCHEDULE=0 3 * * *",
+        "ALTMOUNT_METADATA_BACKUP_KEEP_BACKUPS=10",
+        "ALTMOUNT_SABNZBD_CATEGORIES=movies|1|0|movies|radarr;tv|2|0|tv|sonarr;movies-2160p|3|0|movies-2160p|radarr;tv-2160p|4|0|tv-2160p|sonarr;music|5|0|music|;books|6|0|books|;adult|7|0|adult|",
+        "ALTMOUNT_SABNZBD_DOWNLOAD_CLIENT_BASE_URL=http://altmount:8080/sabnzbd",
+        "ALTMOUNT_SABNZBD_HISTORY_RETENTION_MINUTES=10080",
+        "ALTMOUNT_STREAMING_MAX_PREFETCH=60",
+        "ALTMOUNT_STREAMING_FAILURE_MASKING_ENABLED=false",
+        "ALTMOUNT_STREAMING_FAILURE_MASKING_THRESHOLD=3",
+        "ALTMOUNT_IMPORT_MAX_PROCESSOR_WORKERS=2",
+        "ALTMOUNT_IMPORT_QUEUE_PROCESSING_INTERVAL_SECONDS=5",
+        "ALTMOUNT_IMPORT_MAX_IMPORT_CONNECTIONS=5",
+        "ALTMOUNT_IMPORT_MAX_CONCURRENT_IMPORTS=2",
+        "ALTMOUNT_IMPORT_MAX_CONCURRENT_IMPORTS_WHILE_STREAMING=1",
+        "ALTMOUNT_IMPORT_ALLOWED_FILE_EXTENSIONS=.mkv,.mp4,.avi,.ts,.m4v,.mov,.wmv,.mpg,.mpeg,.xvid,.rm,.rmvb,.asf,.asx,.wtv,.mk3d,.dvr-ms",
+        "ALTMOUNT_IMPORT_MAX_DOWNLOAD_PREFETCH=10",
+        "ALTMOUNT_IMPORT_STRATEGY=SYMLINK",
+        "ALTMOUNT_IMPORT_DIR=/mnt/altmount-import",
+        "ALTMOUNT_IMPORT_WATCH_INTERVAL_SECONDS=10",
+        "ALTMOUNT_IMPORT_ALLOW_NESTED_RAR_EXTRACTION=true",
+        "ALTMOUNT_IMPORT_EXPAND_BLURAY_ISO=true",
+        "ALTMOUNT_IMPORT_RENAME_TO_NZB_NAME=true",
+        "ALTMOUNT_IMPORT_FILTER_SAMPLE_FILES=true",
+        "ALTMOUNT_IMPORT_FAILED_ITEM_RETENTION_HOURS=24",
+        "ALTMOUNT_IMPORT_HISTORY_RETENTION_DAYS=30",
+        "ALTMOUNT_IMPORT_DELETE_COMPLETED_NZB=false",
+        "ALTMOUNT_ENABLE_HEALTH=true",
+        "ALTMOUNT_HEALTH_LIBRARY_DIR=/media",
+        "ALTMOUNT_HEALTH_CLEANUP_ORPHANED_METADATA=false",
+        "ALTMOUNT_HEALTH_CHECK_INTERVAL_SECONDS=5",
+        "ALTMOUNT_HEALTH_MAX_CONCURRENT_JOBS=1",
+        "ALTMOUNT_HEALTH_REPAIR_ENABLED=false",
+        "ALTMOUNT_HEALTH_RESOLVE_REPAIR_ON_IMPORT=false",
+        "ALTMOUNT_HEALTH_MAX_RETRIES=2",
+        "ALTMOUNT_HEALTH_SEGMENT_SAMPLE_PERCENTAGE=1",
+        "ALTMOUNT_HEALTH_LIBRARY_SYNC_INTERVAL_MINUTES=1440",
+        "ALTMOUNT_HEALTH_MAX_REPAIR_RETRIES=3",
+        "ALTMOUNT_SEGMENT_CACHE_ENABLED=true",
+        "ALTMOUNT_SEGMENT_CACHE_PATH=/config/segment-cache",
+        "ALTMOUNT_SEGMENT_CACHE_MAX_SIZE_GB=150",
+        "ALTMOUNT_SEGMENT_CACHE_EXPIRY_HOURS=72",
+        "ALTMOUNT_ARRS_QUEUE_CLEANUP_ENABLED=true",
+        "ALTMOUNT_ARRS_MAX_WORKERS=5",
+        "ALTMOUNT_ARRS_WEBHOOK_BASE_URL=http://altmount:8080",
+        "ALTMOUNT_ARRS_CLEANUP_AUTOMATIC_IMPORT_FAILURE=false",
+        "ALTMOUNT_ARRS_QUEUE_CLEANUP_INTERVAL_SECONDS=300",
+        "ALTMOUNT_ARRS_QUEUE_CLEANUP_GRACE_PERIOD_MINUTES=10",
+        "ALTMOUNT_SABNZBD_FALLBACK_API_KEY={Passwords.32}"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/altmount",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.ConfigRoot}/altmount/metadata",
+          "target": "/metadata",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.ConfigRoot}/altmount/data",
+          "target": "/data",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "devices": [
+        "/dev/fuse:/dev/fuse:rwm"
+      ],
+      "cap_add": [
+        "SYS_ADMIN"
+      ],
+      "security_opt": [
+        "apparmor:unconfined"
+      ],
+      "routes": [
+        {
+          "name": "altmount",
+          "description": "Expose altmount to the web",
+          "useHost": true,
+          "target": "http://altmount:8080",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/altmount/icon.png"
+      },
+      "networks": {
+        "media-stack": {}
+      },
+      "network_mode": "media-stack"
+    }
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "driver": "bridge",
+      "attachable": true
+    }
+  }
+}
