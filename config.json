@@ -1,3 +1,5 @@
 {
-  "url": "https://azukaar.github.io/cosmos-servapps-official/servapps.json"
+  "pageUrl": "https://veneziaisking.github.io/cosmos-servapps",
+  "marketIndexUrl": "https://veneziaisking.github.io/cosmos-servapps/servapps.json",
+  "servappsFolder": "servapps"
 }
