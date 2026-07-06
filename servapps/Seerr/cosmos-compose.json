@@ -40,7 +40,7 @@
       "environment": [
         "PUID={Context.PUID}",
         "PGID={Context.PGID}",
-        "TZ=Europe/Copenhagen",
+        "TZ=auto",
         "PORT=5055"
       ],
       "volumes": [
