@@ -104,9 +104,10 @@
         "cosmos.stack": "radarr"
       },
       "networks": {
-        "media-stack": {}
+        "media-stack": {},
+        "cosmos-arr-default": {}
       },
-      "network_mode": "media-stack"
+      "network_mode": "cosmos-arr-default"
     },
     "sonarr": {
       "image": "lscr.io/linuxserver/sonarr:latest",
@@ -166,9 +167,10 @@
         "cosmos.stack": "sonarr"
       },
       "networks": {
-        "media-stack": {}
+        "media-stack": {},
+        "cosmos-arr-default": {}
       },
-      "network_mode": "media-stack"
+      "network_mode": "cosmos-arr-default"
     }
     {if Context.Enable2160p}
     ,
@@ -230,9 +232,10 @@
         "cosmos.stack": "radarr"
       },
       "networks": {
-        "media-stack": {}
+        "media-stack": {},
+        "cosmos-arr-default": {}
       },
-      "network_mode": "media-stack"
+      "network_mode": "cosmos-arr-default"
     },
     "sonarr4k": {
       "image": "lscr.io/linuxserver/sonarr:latest",
@@ -292,9 +295,10 @@
         "cosmos.stack": "sonarr"
       },
       "networks": {
-        "media-stack": {}
+        "media-stack": {},
+        "cosmos-arr-default": {}
       },
-      "network_mode": "media-stack"
+      "network_mode": "cosmos-arr-default"
     }
     {/if}
   },
