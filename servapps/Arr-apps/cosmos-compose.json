@@ -303,10 +303,12 @@
     {/if}
   },
   "networks": {
-    "media-stack": {
-      "name": "media-stack",
-      "driver": "bridge",
-      "attachable": true
-    }
+  "cosmos-arr-default": {
+    "name": "cosmos-arr-default",
+    "driver": "bridge"
+  },
+  "media-stack": {
+    "name": "media-stack",
+    "external": true
   }
 }
