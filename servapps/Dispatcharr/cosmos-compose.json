@@ -1,15 +1,15 @@
 {
-  "name": "dispatcharr",
+  "name": "Dispatcharr",
   "cosmos-installer": {
     "form": [
-        {
+      {
         "name": "TZ",
         "label": "Timezone",
-        "initialValue": "Europe/Berlin",
+        "initialValue": "Europe/Copenhagen",
         "type": "text",
         "required": true
-        },
-        {
+      },
+      {
         "name": "PUID",
         "label": "Container User ID (PUID)",
         "initialValue": "1001",
@@ -20,20 +20,6 @@
         "name": "PGID",
         "label": "Container Group ID (PGID)",
         "initialValue": "1001",
-        "type": "text",
-        "required": true
-      },
-      {
-        "name": "DispatcharrInternalPort",
-        "label": "Container Port",
-        "initialValue": "9191",
-        "type": "text",
-        "required": true
-      },
-      {
-        "name": "Network",
-        "label": "Docker Network Name",
-        "initialValue": "dispatcharr",
         "type": "text",
         "required": true
       },
@@ -51,10 +37,7 @@
       "image": "ghcr.io/dispatcharr/dispatcharr:latest",
       "container_name": "{ServiceName}",
       "restart": "unless-stopped",
-      "hostname": "{ServiceName}",
-      "ports": [
-        "{Context.DispatcharrPort}:9191"
-      ],
+      "hostname": "dispatcharr",
       "environment": [
         "DISPATCHARR_ENV=aio",
         "REDIS_HOST=localhost",
@@ -95,20 +78,18 @@
       ],
       "labels": {
         "cosmos-auto-update": "true",
-        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/dispatcharr/icon.png",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/Dispatcharr/icon.png",
         "cosmos-force-network-secured": "true"
       },
       "networks": {
-        "{Context.Network}": {}
-      },
-      "network_mode": "{Context.Network}"
+        "media-stack": {}
+      }
     }
   },
   "networks": {
     "media-stack": {
-      "name": "{Context.Network}",
-      "driver": "bridge",
-      "attachable": true
+      "name": "media-stack",
+      "external": true
     }
   }
 }
