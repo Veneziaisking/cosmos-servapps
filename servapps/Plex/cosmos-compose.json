@@ -29,13 +29,6 @@
         "initialValue": "1001",
         "type": "text",
         "required": true
-      },
-      {
-        "name": "PlexClaim",
-        "label": "Plex Claim Token",
-        "initialvalue": "",
-        "type": "text",
-        "required": true
       }
     ]
   },
