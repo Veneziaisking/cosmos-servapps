@@ -1,0 +1,9 @@
+{
+  "name": "Seerr",
+  "longDescription": "<p>Seerr is a modern, open-source media discovery and request management platform. It allows your users to browse and request movies and TV shows, which are then automatically sent to your Radarr and Sonarr instances for download. Seerr is designed to be a beautiful and intuitive interface for managing your media requests.</p><p>Seerr integrates seamlessly with Plex, Jellyfin, and Emby, allowing you to see what is already in your library and what needs to be downloaded. It supports multiple users with different permission levels, so you can control who can request what.</p><p>With Seerr you get a full overview of your media requests, their status, and the ability to approve or reject them. It also supports notifications via a wide range of services such as Discord, Telegram, Slack, and more.</p>",
+  "description": "Seerr is a beautiful and modern media discovery and request management platform that integrates with Radarr, Sonarr, Plex, Jellyfin and Emby. It allows your users to request movies and TV shows, and automatically sends them to your download clients.",
+  "tags": ["media", "movies", "tv", "request", "discovery", "radarr", "sonarr", "plex", "jellyfin", "emby", "streaming"],
+  "repository": "https://github.com/seerr-team/seerr",
+  "image": "https://hub.docker.com/r/ghcr.io/seerr-team/seerr",
+  "supported_architectures": ["amd64", "arm64"]
+}
