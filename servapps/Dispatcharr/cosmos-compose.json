@@ -5,7 +5,7 @@
       {
         "name": "TZ",
         "label": "Timezone",
-        "initialValue": "Europe/Copenhagen",
+        "initialValue": "auto",
         "type": "text",
         "required": true
       },
