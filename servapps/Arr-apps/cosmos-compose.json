@@ -303,12 +303,13 @@
     {/if}
   },
   "networks": {
-  "cosmos-arr-default": {
-    "name": "cosmos-arr-default",
-    "driver": "bridge"
-  },
-  "media-stack": {
-    "name": "media-stack",
-    "external": true
+    "cosmos-arr-default": {
+      "name": "cosmos-arr-default",
+      "driver": "bridge"
+    },
+    "media-stack": {
+      "name": "media-stack",
+      "external": true
+    }
   }
 }
