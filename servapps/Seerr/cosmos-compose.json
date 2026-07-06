@@ -45,7 +45,7 @@
       ],
       "volumes": [
         {
-          "source": "{Context.ConfigRoot}/seerr",
+          "source": "{Context.ConfigRoot}/{ServiceName}",
           "target": "/app/config",
           "type": "bind"
         }
