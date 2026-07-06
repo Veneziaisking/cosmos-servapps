@@ -172,9 +172,9 @@
     }
     {if Context.Enable2160p}
     ,
-    "radarr-2160p": {
+    "radarr4k": {
       "image": "lscr.io/linuxserver/radarr:latest",
-      "container_name": "radarr-2160p",
+      "container_name": "radarr4k",
       "restart": "unless-stopped",
       "environment": [
         "PUID={Context.PUID}",
@@ -184,7 +184,7 @@
       ],
       "volumes": [
         {
-          "source": "{Context.ConfigRoot}/radarr-2160p",
+          "source": "{Context.ConfigRoot}/radarr4k",
           "target": "/config",
           "type": "bind"
         },
@@ -210,7 +210,7 @@
           "name": "Radarr 2160p",
           "description": "Expose Radarr 2160p to the web",
           "useHost": true,
-          "target": "http://radarr-2160p:7879",
+          "target": "http://radarr4k:7879",
           "mode": "SERVAPP",
           "Timeout": 14400000,
           "ThrottlePerMinute": 12000,
@@ -234,9 +234,9 @@
       },
       "network_mode": "media-stack"
     },
-    "sonarr-2160p": {
+    "sonarr4k": {
       "image": "lscr.io/linuxserver/sonarr:latest",
-      "container_name": "sonarr-2160p",
+      "container_name": "sonarr4k",
       "restart": "unless-stopped",
       "environment": [
         "PUID={Context.PUID}",
@@ -246,7 +246,7 @@
       ],
       "volumes": [
         {
-          "source": "{Context.ConfigRoot}/sonarr-2160p",
+          "source": "{Context.ConfigRoot}/sonarr4k",
           "target": "/config",
           "type": "bind"
         },
@@ -272,7 +272,7 @@
           "name": "sonarr 2160p",
           "description": "Expose sonarr 2160p to the web",
           "useHost": true,
-          "target": "http://sonarr-2160p:8990",
+          "target": "http://sonarr4k:8990",
           "mode": "SERVAPP",
           "Timeout": 14400000,
           "ThrottlePerMinute": 12000,
