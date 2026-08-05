@@ -1,0 +1,171 @@
+{
+  "name": "Altmount",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "MediaRoot",
+        "label": "Host Media Root Path",
+        "initialValue": "{DefaultDataPath}/media",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PUID",
+        "label": "Container User ID (PUID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PGID",
+        "label": "Container Group ID (PGID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "COOKIE_DOMAIN",
+        "label": "Cookie Domain (eg. example.com)",
+        "initialValue": "",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "JWT_SECRET",
+        "label": "JWT Secret - TYPE: openssl rand -hex 32",
+        "initialValue": "",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "UseDevBuild",
+        "label": "Use development (unstable) build",
+        "initialValue": false,
+        "type": "checkbox"
+      },
+      {
+        "name": "adminOnly",
+        "label": "Do you want to make this service admin only?",
+        "initialValue": false,
+        "type": "checkbox"
+      }
+    ]
+  },
+  "minVersion": "0.9.0",
+  "services": {
+    "{ServiceName}": {
+      {if Context.UseDevBuild}
+      "image": "ghcr.io/javi11/altmount:dev_20260710-0923",
+      {else}
+      "image": "ghcr.io/javi11/altmount:latest",
+      {/if}
+      "container_name": "{ServiceName}",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "PORT=8080",
+        "COOKIE_DOMAIN={Context.COOKIE_DOMAIN}",
+        "JWT_SECRET={Context.JWT_SECRET}",
+        "LANGUAGE=en_US.UTF-8",
+        "LANG=en_US.UTF-8"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}/data",
+          "target": "/data",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}/metadata",
+          "target": "/metadata",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "devices": [
+        "/dev/fuse:/dev/fuse:rwm"
+      ],
+      "cap_add": [
+        "CAP_SYS_ADMIN"
+      ],
+      "security_opt": [
+        "apparmor=unconfined",
+        "seccomp=unconfined"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:${PORT}/live || exit 1"
+        ],
+        "interval": 5,
+        "timeout": 10,
+        "retries": 3,
+        "start_period": 5
+      },
+      "routes": [
+        {
+          "name": "{ServiceName}",
+          "description": "Expose {ServiceName} to the web",
+          "useHost": true,
+          "target": "http://{ServiceName}:8080",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          ,
+          "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Altmount/icon.png",
+        "cosmos.stack": "{ServiceName}"
+      },
+      "networks": {
+        "media-stack": {}
+      }
+    }
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "external": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "qBittorrent",
+  "longDescription": "<p>Deploy qBittorrent to download and manage torrents through a modern web interface. Features include search, RSS feeds, categories, bandwidth scheduling, sequential downloads, and full compatibility with the Arr ecosystem.</p>",
+  "description": "Feature-rich BitTorrent client with web interface.",
+  "tags": [
+    "qbittorrent",
+    "torrent",
+    "downloads",
+    "media"
+  ],
+  "repository": "https://github.com/linuxserver/docker-qbittorrent",
+  "image": "lscr.io/linuxserver/qbittorrent",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

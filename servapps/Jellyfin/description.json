@@ -1,0 +1,16 @@
+{
+  "name": "Jellyfin",
+  "longDescription": "<p>Deploy Jellyfin to stream your movies, TV series, music, and other media from your own server. Jellyfin is a free, open-source media server with support for hardware acceleration, live TV, DVR, multiple users, and a wide range of client applications.</p>",
+  "description": "Free and open-source media server.",
+  "tags": [
+    "jellyfin",
+    "media",
+    "streaming"
+  ],
+  "repository": "https://github.com/jellyfin/jellyfin",
+  "image": "lscr.io/linuxserver/jellyfin",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

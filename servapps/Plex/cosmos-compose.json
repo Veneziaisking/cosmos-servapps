@@ -1,0 +1,104 @@
+{
+  "name": "Plex",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "MediaRoot",
+        "label": "Host Media Root Path",
+        "initialValue": "/srv/media",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PUID",
+        "label": "Container User ID (PUID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PGID",
+        "label": "Container Group ID (PGID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  "minVersion": "0.7.6",
+  "services": {
+    "{ServiceName}": {
+      "image": "lscr.io/linuxserver/plex:latest",
+      "container_name": "{ServiceName}",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "VERSION=docker",
+        "TZ=auto",
+        "PLEX_CLAIM={Context.PlexClaim}"
+      ],
+      "ports": [
+        "32400:32400/tcp"
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Plex/icon.png"
+      },
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/plex",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "Plex",
+          "description": "Expose {ServiceName} to the web",
+          "useHost": true,
+          "target": "http://{ServiceName}:32400",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          }
+        }
+      ],
+      "networks": {
+        "media-stack": {}
+      }
+    }
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "external": true
+    }
+  }
+}

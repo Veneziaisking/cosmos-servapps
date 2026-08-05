@@ -1,0 +1,110 @@
+{
+  "name": "DRI",
+  "minVersion": "0.8.0",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "DriApiKey",
+        "label": "DRI API Key (optional — leave empty to keep DRI open on the internal network)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "OldBoysApiToken",
+        "label": "OldBoys API Token (optional)",
+        "type": "password",
+        "required": false
+      },
+      {
+        "name": "OldBoysRid",
+        "label": "OldBoys RID (optional)",
+        "type": "password",
+        "required": false
+      },
+      {
+        "name": "adminOnly",
+        "label": "Restrict access to admins only",
+        "type": "checkbox",
+        "initialValue": false
+      }
+    ],
+    "post-install": [
+      {
+        "type": "info",
+        "label": "On first boot DRI auto-imports indexers from your Prowlarr backup and bootstraps each discovered Arr with the DRI Verified indexer, Custom Formats, and quality profiles — no manual setup needed. Supplying both optional OldBoys fields enables OldBoys for Danish Audio searches; a partial pair stays disabled with a startup warning. Works with multiple Radarr/Sonarr instances automatically."
+      }
+    ]
+  },
+  "services": {
+    "{ServiceName}": {
+      "image": "registry.gitlab.com/66bvh8pajgq3hqw2eukb/danish-release-intelligence:latest",
+      "container_name": "{ServiceName}",
+      "restart": "unless-stopped",
+      "environment": [
+        "DRI_AUTO_IMPORT_PROWLARR=1",
+        "DRI_API_KEY={Context.DriApiKey}",
+        "DRI_INDEXER_OLDBOYS_API_TOKEN={Context.OldBoysApiToken}",
+        "DRI_INDEXER_OLDBOYS_RID={Context.OldBoysRid}"
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos-persistent-env": "DRI_API_KEY,DRI_INDEXER_OLDBOYS_API_TOKEN,DRI_INDEXER_OLDBOYS_RID",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Dri/icon.svg",
+        "cosmos.stack": "{ServiceName}"
+      },
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.ConfigRoot}/prowlarr",
+          "target": "/prowlarr",
+          "type": "bind",
+          "read_only": true
+        }
+      ],
+      "networks": {
+        "media-stack": {
+          "aliases": [
+            "dri"
+          ]
+        }
+      },
+      "routes": [
+        {
+          "name": "{ServiceName}",
+          "description": "Expose {ServiceName} to the web",
+          "useHost": true,
+          "target": "http://{ServiceName}:9697",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ]
+    }
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "external": true
+    }
+  }
+}

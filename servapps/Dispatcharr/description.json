@@ -1,0 +1,19 @@
+{
+  "name": "Dispatcharr",
+  "longDescription": "<p>Dispatcharr is a modern IPTV and live TV management platform that allows you to organize, manage, and stream IPTV sources through a simple web interface. It supports M3U playlists, EPG integration, channel management, transcoding capabilities, and hardware acceleration for supported devices.</p><p>Dispatcharr provides an all-in-one solution for managing live television streams and IPTV services while offering an easy-to-use web interface for administration and playback.</p>",
+  "description": "Modern IPTV and live TV management platform with M3U, EPG, and streaming support.",
+  "tags": [
+    "iptv",
+    "streaming",
+    "tv",
+    "m3u",
+    "epg",
+    "media"
+  ],
+  "repository": "https://github.com/Dispatcharr/Dispatcharr",
+  "image": "ghcr.io/dispatcharr/dispatcharr:latest",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

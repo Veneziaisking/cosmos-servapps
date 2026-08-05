@@ -1,0 +1,183 @@
+{
+  "name": "Sonarr",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "MediaRoot",
+        "label": "Host Media Root Path",
+        "initialValue": "{DefaultDataPath}/media",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PUID",
+        "label": "Container User ID (PUID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PGID",
+        "label": "Container Group ID (PGID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "adminOnly",
+        "label": "Do you want to make this service admin only?",
+        "initialValue": false,
+        "type": "checkbox"
+      },
+      {
+        "name": "Enable2160p",
+        "label": "Enable 2160p Sonarr",
+        "initialValue": false,
+        "type": "checkbox"
+      }
+    ]
+  },
+  "minVersion": "0.9.0",
+  "services": {
+    "{ServiceName}": {
+      "image": "lscr.io/linuxserver/sonarr:latest",
+      "container_name": "{ServiceName}",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "SONARR__SERVER__PORT=8989"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "{ServiceName}",
+          "description": "Expose {ServiceName} to the web",
+          "useHost": true,
+          "target": "http://{ServiceName}:8989",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Sonarr/icon.png",
+        "cosmos.stack": "{ServiceName}"
+      },
+      "networks": {
+        "media-stack": {}
+      }
+    }
+    {if Context.Enable2160p}
+    ,
+    "{ServiceName}-4k": {
+      "image": "lscr.io/linuxserver/sonarr:latest",
+      "container_name": "{ServiceName}-4k",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "SONARR__SERVER__PORT=8990"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}-4k",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.MediaRoot}",
+          "target": "/media",
+          "type": "bind"
+        },
+        {
+          "source": "/mnt",
+          "target": "/mnt",
+          "type": "bind",
+          "bind": {
+            "propagation": "rshared"
+          },
+          "BindOptions": {
+            "Propagation": "rshared"
+          }
+        }
+      ],
+      "routes": [
+        {
+          "name": "{ServiceName} 4K",
+          "description": "Expose {ServiceName} 4K to the web",
+          "useHost": true,
+          "target": "http://{ServiceName}-4k:8990",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          , "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Sonarr/icon.png",
+        "cosmos.stack": "{ServiceName}"
+      },
+      "networks": {
+        "media-stack": {}
+      }
+    }
+    {/if}
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "external": true
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Sonarr",
+  "longDescription": "<p>Deploy one or two Sonarr instances for managing your TV series library. Optionally enable a dedicated 2160p (4K) instance to keep UHD series separate with independent quality profiles, root folders, custom formats, release profiles, and download client settings.</p>",
+  "description": "TV series collection manager with optional dedicated 2160p (4K) instance.",
+  "tags": [
+    "sonarr",
+    "tv",
+    "media"
+  ],
+  "repository": "https://github.com/linuxserver/docker-sonarr",
+  "image": "lscr.io/linuxserver/sonarr",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

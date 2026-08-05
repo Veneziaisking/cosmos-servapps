@@ -1,0 +1,17 @@
+{
+  "name": "Prowlarr",
+  "longDescription": "<p>Deploy Prowlarr to centrally manage indexers for all your Arr applications. Configure indexers once and automatically synchronize them across Radarr, Sonarr, Lidarr, Readarr, Whisparr, and other supported applications.</p>",
+  "description": "Indexer manager for the Arr ecosystem.",
+  "tags": [
+    "prowlarr",
+    "arr",
+    "indexers",
+    "media"
+  ],
+  "repository": "https://github.com/linuxserver/docker-prowlarr",
+  "image": "lscr.io/linuxserver/prowlarr",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}

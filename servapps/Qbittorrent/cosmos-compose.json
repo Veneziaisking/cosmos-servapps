@@ -1,0 +1,114 @@
+{
+  "name": "Qbittorrent",
+  "cosmos-installer": {
+    "form": [
+      {
+        "name": "DownloadsRoot",
+        "label": "Host Downloads Root Path",
+        "initialValue": "{DefaultDataPath}/downloads",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "ConfigRoot",
+        "label": "Host Config Root Path",
+        "initialValue": "/srv/config",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PUID",
+        "label": "Container User ID (PUID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "PGID",
+        "label": "Container Group ID (PGID)",
+        "initialValue": "1001",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "TorrentPort",
+        "label": "Torrent Listening Port",
+        "initialValue": "6881",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "adminOnly",
+        "label": "Do you want to make this service admin only?",
+        "initialValue": false,
+        "type": "checkbox"
+      }
+    ]
+  },
+  "minVersion": "0.9.0",
+  "services": {
+    "{ServiceName}": {
+      "image": "lscr.io/linuxserver/qbittorrent:latest",
+      "container_name": "{ServiceName}",
+      "restart": "unless-stopped",
+      "environment": [
+        "PUID={Context.PUID}",
+        "PGID={Context.PGID}",
+        "TZ=Europe/Copenhagen",
+        "WEBUI_PORT={Context.WebUIPort}",
+        "TORRENTING_PORT={Context.TorrentPort}"
+      ],
+      "volumes": [
+        {
+          "source": "{Context.ConfigRoot}/{ServiceName}",
+          "target": "/config",
+          "type": "bind"
+        },
+        {
+          "source": "{Context.DownloadsRoot}",
+          "target": "/downloads",
+          "type": "bind"
+        }
+      ],
+      "ports": [
+        "{Context.TorrentPort}:6881/tcp",
+        "{Context.TorrentPort}:6881/udp"
+      ],
+      "routes": [
+        {
+          "name": "{ServiceName}",
+          "description": "Expose {ServiceName} to the web",
+          "useHost": true,
+          "target": "http://{ServiceName}:8080",
+          "mode": "SERVAPP",
+          "Timeout": 14400000,
+          "ThrottlePerMinute": 12000,
+          "BlockCommonBots": true,
+          "SmartShield": {
+            "Enabled": true
+          },
+          "AuthEnabled": true
+          {if Context.adminOnly}
+          ,
+          "AuthAdmin": true
+          {/if}
+        }
+      ],
+      "labels": {
+        "cosmos-auto-update": "true",
+        "cosmos-force-network-secured": "true",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Qbittorrent/icon.png",
+        "cosmos.stack": "{ServiceName}"
+      },
+      "networks": {
+        "media-stack": {}
+      }
+    }
+  },
+  "networks": {
+    "media-stack": {
+      "name": "media-stack",
+      "external": true
+    }
+  }
+}

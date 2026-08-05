@@ -1,0 +1,19 @@
+{
+  "name": "DRI",
+  "longDescription": "<p>Danish Release Intelligence (DRI) is a local Arr-compatible indexer service for Radarr and Sonarr that filters releases by verified Danish subtitle evidence. Radarr or Sonarr calls DRI as a Newznab/Torznab-compatible indexer, and DRI searches configured indexers live, verifying release-level evidence such as Newznab attributes, extended metadata, or validated NFO text before returning only accepted releases in strict Danish subtitle mode.</p><p>DRI does not accept Danish audio, Nordic subtitles, title tags like MULTi/NORDIC, or indexer categories as proof on their own — only release-specific evidence counts. It includes an Arr Setup Doctor for connection discovery via existing Prowlarr Application records, provider API auditing, and live search cost estimation, all without grabbing or downloading releases. DRI requires your own lawful indexer access and does not provide credentials, indexers, download clients, or media.</p><p>Learn more at https://github.com/unknown0152/danish-release-intelligence</p>",
+  "description": "Arr-compatible indexer service that verifies release-level Danish subtitle evidence for Radarr and Sonarr.",
+  "tags": [
+    "dri",
+    "arr",
+    "radarr",
+    "sonarr",
+    "subtitles",
+    "indexer"
+  ],
+  "repository": "https://github.com/unknown0152/danish-release-intelligence",
+  "image": "ghcr.io/unknown0152/danish-release-intelligence:latest",
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ]
+}
