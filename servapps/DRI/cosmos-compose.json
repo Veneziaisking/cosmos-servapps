@@ -57,7 +57,7 @@
         "cosmos-auto-update": "true",
         "cosmos-force-network-secured": "true",
         "cosmos-persistent-env": "DRI_API_KEY,DRI_INDEXER_OLDBOYS_API_TOKEN,DRI_INDEXER_OLDBOYS_RID",
-        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/DRI/icon.svg",
+        "cosmos-icon": "https://veneziaisking.github.io/cosmos-servapps/servapps/Dri/icon.svg",
         "cosmos.stack": "{ServiceName}"
       },
       "volumes": [
