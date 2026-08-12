@@ -67,7 +67,7 @@
           "type": "bind"
         },
         {
-          "source": "{Context.ConfigRoot}/prowlarr",
+          "source": "{Context.ConfigRoot}/Prowlarr",
           "target": "/prowlarr",
           "type": "bind",
           "read_only": true
